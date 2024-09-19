@@ -1,6 +1,7 @@
 package com.jar.kirana.entities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.jar.kirana.dto.UserAddDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,4 +22,10 @@ public class User {
     private String username;
     private String password;
     private Role role;
+
+    public User(UserAddDto userAddDto){
+        this.username = userAddDto.getUsername();
+        this.password = userAddDto.getPassword();
+        this.role = Role.USER;
+    }
 }
