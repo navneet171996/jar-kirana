@@ -1,6 +1,6 @@
 package com.jar.kirana.controllers;
 
-import com.jar.kirana.dto.UserAddDto;
+import com.jar.kirana.dto.UserAddDTO;
 import com.jar.kirana.services.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class AdminController {
     }
 
     @PostMapping(path = "/addUser")
-    public ResponseEntity<String> addUser(@RequestBody UserAddDto userAddDto){
+    public ResponseEntity<String> addUser(@RequestBody UserAddDTO userAddDto){
         try{
             String userId = adminService.addUser(userAddDto);
             return new ResponseEntity<>(userId, HttpStatus.CREATED);

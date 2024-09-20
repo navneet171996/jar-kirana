@@ -2,6 +2,7 @@ package com.jar.kirana.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.jar.kirana.dto.TransactionAddDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,15 @@ public class Transaction {
     private String userId;
     private Double amount;
     private Currency currency;
+    private Double conversionRate;
     private TransactionType transactionType;
     private LocalDateTime transactionDate;
+
+    public Transaction(TransactionAddDTO transactionAddDTO){
+        this.userId = transactionAddDTO.getUserId();
+        this.amount = transactionAddDTO.getAmount();
+        this.currency = transactionAddDTO.getCurrency();
+        this.transactionType = transactionAddDTO.getTransactionType();
+
+    }
 }

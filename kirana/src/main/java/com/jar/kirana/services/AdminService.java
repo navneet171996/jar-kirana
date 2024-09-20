@@ -1,6 +1,6 @@
 package com.jar.kirana.services;
 
-import com.jar.kirana.dto.UserAddDto;
+import com.jar.kirana.dto.UserAddDTO;
 import com.jar.kirana.entities.User;
 import com.jar.kirana.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class AdminService {
         this.userRepository = userRepository;
     }
 
-    public String addUser(UserAddDto userAddDto){
+    public String addUser(UserAddDTO userAddDto){
         Optional<User> userOptional = userRepository.findUserByUsername(userAddDto.getUsername());
         if(userOptional.isPresent()){
             throw new RuntimeException(String.format("User %s already exists", userOptional.get().getUsername()));

@@ -1,14 +1,13 @@
 package com.jar.kirana.entities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.jar.kirana.dto.UserAddDto;
+import com.jar.kirana.dto.UserAddDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
 
 @Getter
 @Setter
@@ -23,7 +22,7 @@ public class User {
     private String password;
     private Role role;
 
-    public User(UserAddDto userAddDto){
+    public User(UserAddDTO userAddDto){
         this.username = userAddDto.getUsername();
         this.password = userAddDto.getPassword();
         this.role = Role.USER;
