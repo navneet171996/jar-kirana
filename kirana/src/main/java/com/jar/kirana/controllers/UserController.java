@@ -42,4 +42,9 @@ public class UserController {
     public ResponseEntity<ReportGetDTO> getMonthlyReport(@PathVariable String userId){
         return new ResponseEntity<>(userService.getMonthlyReport(userId), HttpStatus.OK);
     }
+
+    @GetMapping(path = "/yearly-report/{userId}")
+    public ResponseEntity<ReportGetDTO> getYearlyReport(@PathVariable String userId){
+        return new ResponseEntity<>(userService.getYearlyReport(userId), HttpStatus.OK);
+    }
 }

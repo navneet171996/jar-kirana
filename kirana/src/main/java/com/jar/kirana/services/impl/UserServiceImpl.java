@@ -100,7 +100,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ReportGetDTO getYearlyReport(String userId) {
-        return new ReportGetDTO();
+        List<Transaction> transactions = transactionRepository.findByUserId(userId);
+        if(!transactions.isEmpty()){
+            int currentYear = LocalDate.now().getYear();
+            transactions = transactions.stream()
+                    .filter(x -> x.getTransactionDate().getYear() == currentYear)
+                    .toList();
+            ReportGetDTO reportGetDTO = mapTransactionsToReport(transactions);
+            reportGetDTO.setUserId(userId);
+            return reportGetDTO;
+        }
+        ReportGetDTO reportGetDTO = new ReportGetDTO();
+        reportGetDTO.setUserId(userId);
+        return reportGetDTO;
     }
 
     private ReportGetDTO mapTransactionsToReport(List<Transaction> transactions){
