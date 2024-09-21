@@ -8,6 +8,7 @@ import java.util.List;
 public interface UserService {
     public String recordTransaction(TransactionAddDTO transactionAddDTO);
     public ReportGetDTO getDailyReport(String userId);
+    public ReportGetDTO getWeeklyReport(String userId);
     public ReportGetDTO getMonthlyReport(String userId);
     public ReportGetDTO getYearlyReport(String userId);
 }
