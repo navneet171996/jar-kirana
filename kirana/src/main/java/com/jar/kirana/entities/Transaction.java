@@ -24,6 +24,7 @@ public class Transaction {
     private Double amount;
     private Currency currency;
     private Double conversionRate;
+    private Double amountInInr;
     private TransactionType transactionType;
     private LocalDateTime transactionDate;
 
