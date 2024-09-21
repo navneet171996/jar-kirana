@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -79,7 +80,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ReportGetDTO getMonthlyReport(String userId) {
-        return new ReportGetDTO();
+        List<Transaction> transactions = transactionRepository.findByUserId(userId);
+        if(!transactions.isEmpty()){
+            YearMonth currentMonth = YearMonth.now();
+            transactions = transactions.stream()
+                    .filter(x -> {
+                        LocalDate transactionDate = x.getTransactionDate().toLocalDate();
+                        YearMonth transactionMonth = YearMonth.from(transactionDate);
+                        return transactionMonth.equals(currentMonth);
+                    }).toList();
+            ReportGetDTO reportGetDTO = mapTransactionsToReport(transactions);
+            reportGetDTO.setUserId(userId);
+            return reportGetDTO;
+        }
+        ReportGetDTO reportGetDTO = new ReportGetDTO();
+        reportGetDTO.setUserId(userId);
+        return reportGetDTO;
     }
 
     @Override

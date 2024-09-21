@@ -35,6 +35,11 @@ public class UserController {
 
     @GetMapping(path = "/weekly-report/{userId}")
     public ResponseEntity<ReportGetDTO> getWeeklyReport(@PathVariable String userId){
-        return new ResponseEntity<>(userService.getDailyReport(userId), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getWeeklyReport(userId), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/monthly-report/{userId}")
+    public ResponseEntity<ReportGetDTO> getMonthlyReport(@PathVariable String userId){
+        return new ResponseEntity<>(userService.getMonthlyReport(userId), HttpStatus.OK);
     }
 }
