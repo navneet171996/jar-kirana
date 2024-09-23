@@ -9,6 +9,8 @@ import com.jar.kirana.entities.TransactionType;
 import com.jar.kirana.repositories.TransactionRepository;
 import com.jar.kirana.services.CurrencyApiService;
 import com.jar.kirana.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -19,6 +21,8 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final TransactionRepository transactionRepository;
     private final CurrencyApiService currencyApiService;
@@ -39,6 +43,7 @@ public class UserServiceImpl implements UserService {
             transaction.setConversionRate(inrConversionRate/baseConversionRate);
             transaction.setAmountInInr(transaction.getAmount() * transaction.getConversionRate());
         } catch (Exception e) {
+            logger.error("Currency {} is not available in currency api", transactionAddDTO.getCurrency());
             throw new RuntimeException("Currency not available");
         }
         Transaction savedTransaction = transactionRepository.save(transaction);

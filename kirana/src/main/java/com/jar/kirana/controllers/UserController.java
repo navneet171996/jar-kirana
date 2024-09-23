@@ -3,6 +3,8 @@ package com.jar.kirana.controllers;
 import com.jar.kirana.dto.ReportGetDTO;
 import com.jar.kirana.dto.TransactionAddDTO;
 import com.jar.kirana.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/api/v1/user")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -23,7 +26,7 @@ public class UserController {
             String transactionId = userService.recordTransaction(transactionAddDTO);
             return new ResponseEntity<>(transactionId, HttpStatus.CREATED);
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage());
             return new ResponseEntity<>("Transaction Not Recorded", HttpStatus.BAD_GATEWAY);
         }
     }
