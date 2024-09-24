@@ -42,6 +42,7 @@ Record Transaction API:
     -POST /api/v1/user/record
     -This API lets users add transactions. Admin cannot add transactions
     -Request Body:
+    
     {
         "userId" : "66ec61be39c2f916b8cb803d",(string)
         "amount" : 70,(long)
@@ -52,7 +53,7 @@ Record Transaction API:
 The user can see his/her transactions with the following APIs
 1. Get daily report API:
     -GET /api/v1/user/daily-report/{userId}
-    -This API returns the daily report consisting of totalCredit, totalDebit, balance and the list of transactions
+    -This API returns the daily report consisting of totalCredit, totalDebit, balance and the list  of transactions
 
 2. Get weekly report API:
     -GET /api/v1/user/weekly-report/{userId}
