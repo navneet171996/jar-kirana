@@ -2,6 +2,8 @@ package com.jar.kirana.controllers;
 
 import com.jar.kirana.dto.LoginRequestDTO;
 import com.jar.kirana.dto.LoginResponseDTO;
+import com.jar.kirana.exceptions.AuthenticationFailedException;
+import com.jar.kirana.exceptions.UserNotFoundException;
 import com.jar.kirana.services.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +29,18 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO){
         try {
+            logger.info("Login attempt for user {}", loginRequestDTO.getUsername());
             return new ResponseEntity<LoginResponseDTO>(authenticationService.authenticate(loginRequestDTO), HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage());
+        }catch (UserNotFoundException e){
+            logger.warn("Login failed: User {} not found", loginRequestDTO.getUsername());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (AuthenticationFailedException e){
+            logger.warn("Login failed: Authentication failed for user {}", loginRequestDTO.getUsername());
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        catch (Exception e) {
+            logger.error("Unexpected error {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }

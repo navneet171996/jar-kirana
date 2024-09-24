@@ -2,6 +2,7 @@ package com.jar.kirana.controllers;
 
 import com.jar.kirana.dto.ReportGetDTO;
 import com.jar.kirana.dto.TransactionAddDTO;
+import com.jar.kirana.exceptions.CurrencyNotAvailableException;
 import com.jar.kirana.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +24,16 @@ public class UserController {
     @PostMapping(path = "/record")
     public ResponseEntity<String> recordTransaction(@RequestBody TransactionAddDTO transactionAddDTO){
         try{
+            logger.info("Adding transaction for user {}", transactionAddDTO.getUserId());
             String transactionId = userService.recordTransaction(transactionAddDTO);
+            logger.info("Successfully added transaction with id {}", transactionId);
             return new ResponseEntity<>(transactionId, HttpStatus.CREATED);
+        } catch (CurrencyNotAvailableException e) {
+            logger.error("Currency not available in currency API, reason:{}", e.getMessage());
+            return new ResponseEntity<>("Transaction not recorded", HttpStatus.BAD_REQUEST);
         }catch (Exception e){
-            logger.error(e.getLocalizedMessage());
-            return new ResponseEntity<>("Transaction Not Recorded", HttpStatus.BAD_GATEWAY);
+            logger.error("Unexpected error while recording transaction, reason:{} ",e.getMessage());
+            return new ResponseEntity<>("Transaction Not Recorded", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

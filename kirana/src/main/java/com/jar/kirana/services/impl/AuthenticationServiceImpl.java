@@ -4,6 +4,7 @@ import com.jar.kirana.dto.LoginRequestDTO;
 import com.jar.kirana.dto.LoginResponseDTO;
 import com.jar.kirana.entities.User;
 import com.jar.kirana.entities.UserToken;
+import com.jar.kirana.exceptions.AuthenticationFailedException;
 import com.jar.kirana.repositories.UserRepository;
 import com.jar.kirana.repositories.UserTokenRepository;
 import com.jar.kirana.security.JwtUtils;
@@ -41,6 +42,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public LoginResponseDTO authenticate(LoginRequestDTO loginRequestDTO) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword()));
+        if(!authentication.isAuthenticated()){
+            logger.error("Bad credentials");
+            throw new AuthenticationFailedException("Bad credentials");
+        }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Optional<User> userOptional = userRepository.findUserByUsername(loginRequestDTO.getUsername());
         if(userOptional.isPresent()){

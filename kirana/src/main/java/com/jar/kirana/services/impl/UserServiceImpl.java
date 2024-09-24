@@ -6,6 +6,7 @@ import com.jar.kirana.dto.TransactionAddDTO;
 import com.jar.kirana.dto.TransactionGetDTO;
 import com.jar.kirana.entities.Transaction;
 import com.jar.kirana.entities.TransactionType;
+import com.jar.kirana.exceptions.CurrencyNotAvailableException;
 import com.jar.kirana.repositories.TransactionRepository;
 import com.jar.kirana.services.CurrencyApiService;
 import com.jar.kirana.services.UserService;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
             transaction.setAmountInInr(transaction.getAmount() * transaction.getConversionRate());
         } catch (Exception e) {
             logger.error("Currency {} is not available in currency api", transactionAddDTO.getCurrency());
-            throw new RuntimeException("Currency not available");
+            throw new CurrencyNotAvailableException("Currency not available");
         }
         Transaction savedTransaction = transactionRepository.save(transaction);
         return savedTransaction.getId();
