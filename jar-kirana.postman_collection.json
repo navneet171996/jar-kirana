@@ -1,0 +1,181 @@
+{
+	"info": {
+		"_postman_id": "39a1f5c7-6da5-48b3-b3a2-4d14f658ba7e",
+		"name": "jar-kirana",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4762072"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Add User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"saumya\",\r\n    \"password\" : \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/admin/addUser",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"addUser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Record Transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\" : \"66ec61be39c2f916b8cb803d\",\r\n    \"amount\" : 40,\r\n    \"currency\" : \"INR\",\r\n    \"transactionType\" : \"DEBIT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/user/record",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"record"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get daily report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/user/daily-report/66ec61be39c2f916b8cb803d",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"daily-report",
+								"66ec61be39c2f916b8cb803d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Weekly Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/user/weekly-report/66ec61be39c2f916b8cb803d",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"weekly-report",
+								"66ec61be39c2f916b8cb803d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Monthly Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/user/monthly-report/66ec61be39c2f916b8cb803d",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"monthly-report",
+								"66ec61be39c2f916b8cb803d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Yearly Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/user/yearly-report/66ec61be39c2f916b8cb803d",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"yearly-report",
+								"66ec61be39c2f916b8cb803d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
