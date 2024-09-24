@@ -3,6 +3,7 @@ package com.jar.kirana.services;
 import com.jar.kirana.dto.UserAddDTO;
 import com.jar.kirana.entities.User;
 import com.jar.kirana.repositories.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,9 +12,11 @@ import java.util.Optional;
 public class AdminService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AdminService(UserRepository userRepository) {
+    public AdminService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public String addUser(UserAddDTO userAddDto){
@@ -22,6 +25,7 @@ public class AdminService {
             throw new RuntimeException(String.format("User %s already exists", userOptional.get().getUsername()));
         }
         User user = new User(userAddDto);
+        user.setPassword(passwordEncoder.encode(userAddDto.getPassword()));
         User savedUser = userRepository.save(user);
         return savedUser.getId();
     }
