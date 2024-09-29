@@ -27,4 +27,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleCurrencyNotAvailableException(CurrencyNotAvailableException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(RateLimitException.class)
+    public ResponseEntity<String> handleRateLimitException(RateLimitException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.TOO_MANY_REQUESTS);
+    }
 }

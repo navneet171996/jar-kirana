@@ -1,5 +1,6 @@
 package com.jar.kirana.controllers;
 
+import com.jar.kirana.config.rateLimiter.WithRateLimitProtection;
 import com.jar.kirana.dto.ReportGetDTO;
 import com.jar.kirana.dto.TransactionAddDTO;
 import com.jar.kirana.exceptions.CurrencyNotAvailableException;
@@ -21,6 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @WithRateLimitProtection
     @PostMapping(path = "/record")
     public ResponseEntity<String> recordTransaction(@RequestBody TransactionAddDTO transactionAddDTO){
         try{
