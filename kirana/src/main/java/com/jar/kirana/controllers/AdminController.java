@@ -20,6 +20,15 @@ public class AdminController {
         this.adminService = adminService;
     }
 
+    /**
+     * Takes in a username and a password to store a user
+     * <p>
+     * An admin can only add users. Pass in the bearer token of an admin within the Authorization header.
+     * The method passes the userAddDto object to adminService.addUser() method
+     * @param userAddDto : username(string), password(string)
+     * @return string: specifying the id of the newly created user enclosed within a ResponseEntity object
+     * @throws UserAlreadyExistsException if the username already exists
+     */
     @PostMapping(path = "/addUser")
     public ResponseEntity<String> addUser(@RequestBody UserAddDTO userAddDto){
         try{

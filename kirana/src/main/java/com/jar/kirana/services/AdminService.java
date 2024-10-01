@@ -20,6 +20,16 @@ public class AdminService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Takes in a username and a password to store a user.
+     * <p>
+     * The method checks whether the username already exists. If not then it creates a new user with the given username and password.
+     * The password is encoded using BCrypt password encoder and stored in the DB.
+     * It returns a String which is the user id of the saved user
+     * @param userAddDto: username(string), password(string)
+     * @return userId(string)
+     * @throws UserAlreadyExistsException if the username already exists
+     */
     public String addUser(UserAddDTO userAddDto){
         Optional<User> userOptional = userRepository.findUserByUsername(userAddDto.getUsername());
         if(userOptional.isPresent()){
