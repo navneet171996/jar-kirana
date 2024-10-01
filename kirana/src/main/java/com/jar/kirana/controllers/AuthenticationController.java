@@ -37,8 +37,7 @@ public class AuthenticationController {
         }catch (AuthenticationFailedException e){
             logger.warn("Login failed: Authentication failed for user {}", loginRequestDTO.getUsername());
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Unexpected error {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

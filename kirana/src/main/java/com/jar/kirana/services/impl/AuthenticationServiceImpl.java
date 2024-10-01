@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -41,32 +42,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public LoginResponseDTO authenticate(LoginRequestDTO loginRequestDTO) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword()));
-        if(!authentication.isAuthenticated()){
-            logger.error("Bad credentials");
-            throw new AuthenticationFailedException("Bad credentials");
-        }
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        Optional<User> userOptional = userRepository.findUserByUsername(loginRequestDTO.getUsername());
-        if(userOptional.isPresent()){
-            User user = userOptional.get();
-            String token = jwtUtils.generateToken(authentication);
-            List<UserToken> prevUserTokens = userTokenRepository.findByUsername(user.getUsername());
-            prevUserTokens.forEach(prevToken -> {
-                prevToken.setIsLoggedOut(true);
-            });
-            userTokenRepository.saveAll(prevUserTokens);
+        try{
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            Optional<User> userOptional = userRepository.findUserByUsername(loginRequestDTO.getUsername());
+            if(userOptional.isPresent()){
+                User user = userOptional.get();
+                String token = jwtUtils.generateToken(authentication);
+                List<UserToken> prevUserTokens = userTokenRepository.findByUsername(user.getUsername());
+                prevUserTokens.forEach(prevToken -> {
+                    prevToken.setIsLoggedOut(true);
+                });
+                userTokenRepository.saveAll(prevUserTokens);
 
-            UserToken userToken = new UserToken();
-            userToken.setToken(token);
-            userToken.setIsLoggedOut(false);
-            userToken.setUsername(user.getUsername());
-            userTokenRepository.save(userToken);
+                UserToken userToken = new UserToken();
+                userToken.setToken(token);
+                userToken.setIsLoggedOut(false);
+                userToken.setUsername(user.getUsername());
+                userTokenRepository.save(userToken);
 
-            return new LoginResponseDTO(user.getUsername(), token);
-        }else {
-            logger.error("Username {} not found", loginRequestDTO.getUsername());
-            throw new UsernameNotFoundException(String.format("Username %s not found", loginRequestDTO.getUsername()));
+                return new LoginResponseDTO(user.getUsername(), token);
+            }else {
+                logger.error("Username {} not found", loginRequestDTO.getUsername());
+                throw new UsernameNotFoundException(String.format("Username %s not found", loginRequestDTO.getUsername()));
+            }
+        } catch (AuthenticationException e) {
+            logger.error("Wrong password for username {}", loginRequestDTO.getUsername());
+            throw new AuthenticationFailedException(String.format("Wrong password for username %s", loginRequestDTO.getUsername()));
         }
     }
 }
